@@ -18,7 +18,7 @@ class ImageLinkForm extends Component {
     const image = document.getElementById("inputimage");
     const width = Number(image.width);
     const height = Number(image.height);
-    const offset = Number(0);
+    const offset = Number(5);
     return {
       leftCol: faceBox.left_col * width - offset,
       topRow: faceBox.top_row * height - offset,
@@ -72,10 +72,8 @@ class ImageLinkForm extends Component {
     )
       .then((response) => response.text())
       .then((result) => JSON.parse(result))
-      .then((data) => this.displayFaceBox(this.calculateFaceLocation(data)))
-      .catch((error) => console.log("error", error));
-
-      console.log(this.state.box,'1')
+      .then((data) => this.displayFaceBox(this.calculateFaceLocation(data)))      
+      .catch((error) => console.log("error", error));     
       
   };
 
