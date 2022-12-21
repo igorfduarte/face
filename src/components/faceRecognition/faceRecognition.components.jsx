@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import "./faceRecognition.css";
 
-const FaceRecognition = ({ imageUrl, box }) => {
+const FaceRecognition = ({ imageUrl, box,multiple }) => {
   const [image, setImage] = useState(null);
 
   const canvas = useRef(null);
@@ -38,9 +38,10 @@ const FaceRecognition = ({ imageUrl, box }) => {
 
   return (
     <div className="center ma">
-      <div className="canvas">
-        {box.leftCol ? (
-          <canvas
+      <div className="canvas"> 
+
+      {box.leftCol && !multiple
+          ? <canvas
             className="mt3"
             ref={canvas}
             width={
@@ -49,9 +50,15 @@ const FaceRecognition = ({ imageUrl, box }) => {
             }
             height={document.getElementById("inputimage").height - (box.topRow + box.bottomRow)}
           ></canvas>
-        ) : (
+          : <> 
+          {multiple
+          ? <p className="white f3 center pt3"> Detected multiple faces. Please choose an image with only one face</p>
+          :null
+          } 
           <canvas id="canv" ref={canvas} width={0} height={0}></canvas>
-        )}
+          </>
+        }    
+        
       </div>
       <div className="absolute mt2">
         <img

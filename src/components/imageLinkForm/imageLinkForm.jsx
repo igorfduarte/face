@@ -7,13 +7,27 @@ class ImageLinkForm extends Component {
     super();
     this.state = {
       input: "",
-      imageUrl: "https://i0.wp.com/post.medicalnewstoday.com/wp-content/uploads/sites/3/2020/03/GettyImages-1092658864_hero-1024x575.jpg",
+      imageUrl:
+        "https://i0.wp.com/post.medicalnewstoday.com/wp-content/uploads/sites/3/2020/03/GettyImages-1092658864_hero-1024x575.jpg",
       box: {},
+      multiple: false,
     };
   }
 
   //TODO change regions array to multiple faces
   calculateFaceLocation = (data) => {
+
+    if(!data.outputs[0].data.regions){
+      alert('face not detected')
+    }
+
+    if (data.outputs[0].data.regions.length > 1) {
+      this.setState({ multiple: true });
+    } else{
+      this.setState({ multiple: false });
+    }
+
+
     const faceBox = data.outputs[0].data.regions[0].region_info.bounding_box;
     const image = document.getElementById("inputimage");
     const width = Number(image.width);
@@ -72,18 +86,18 @@ class ImageLinkForm extends Component {
     )
       .then((response) => response.text())
       .then((result) => JSON.parse(result))
-      .then((data) => this.displayFaceBox(this.calculateFaceLocation(data)))      
-      .catch((error) => console.log("error", error));     
-      
+      .then((data) => this.displayFaceBox(this.calculateFaceLocation(data)))
+      .catch((error) => console.log("error", error));
   };
 
   render() {
     return (
       <div>
-        <div>
-        </div>
+        <div></div>
         <Rank />
-        <p className="f3 center">{"Paste any image url that contain faces"}</p>
+        <p className=" white f3 center">
+          {"Paste any image url that contains a face"}
+        </p>
         <div className="center">
           <div className="form center pa4 br3 shadow-5">
             <input
@@ -103,6 +117,7 @@ class ImageLinkForm extends Component {
           <FaceRecognition
             box={this.state.box}
             imageUrl={this.state.imageUrl}
+            multiple={this.state.multiple}
           />
         </div>
       </div>
